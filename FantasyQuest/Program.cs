@@ -1,11 +1,10 @@
-﻿using FantasyQuest.Adventures;
-using System.Linq.Expressions;
-using System.Threading.Channels;
+﻿using FantasyQuest.Game;
 
 namespace FantasyQuest
 {
     internal class Program
     {
+        private static GameService gameService = new GameService();
         static void Main(string[] args)
         {
             makeTitle();
@@ -15,7 +14,7 @@ namespace FantasyQuest
         private static void makeTitle()
         {
             Console.WriteLine("█▀▀ ▄▀█ █▄░█ ▀█▀ ▄▀█ █▀ █▄█   █▀█ █░█ █▀▀ █▀ ▀█▀");
-            Console.WriteLine("█▀░ █▀█ █░▀█ ░█░ █▀█ ▄█ ░█░   ▀▀█ █▄█ ██▄ ▄█ ░█░");
+            Console.WriteLine("█▀░ █▀█ █░▀█ ░█░ █▀█ ▄█ ░█░   ▀▀█ █▄█ ██▄ ▄█ ░█░\n");
         }
 
         private static void makeMainMenu()
@@ -28,7 +27,7 @@ namespace FantasyQuest
                 switch (Console.ReadLine().ToUpper())
                 {
                     case "S":
-                        startGame();
+                        gameService.startGame();
                         inputValid = true;
                         break;
                     case "L":
@@ -52,14 +51,7 @@ namespace FantasyQuest
         {
             Console.WriteLine("(S)tart a new game");
             Console.WriteLine("(L)oad a game");
-            Console.WriteLine("(C)reate new character");
-        }
-        private static void startGame()
-        {
-            var bathPath = $"{AppDomain.CurrentDomain.BaseDirectory}/Adventures";
-            var initialAdventure = new Adventure();
-            
-            Console.WriteLine("You stated the game.");
+            Console.WriteLine("(C)reate new character\n");
         }
 
         private static void loadGame()
