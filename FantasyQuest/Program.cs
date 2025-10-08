@@ -1,10 +1,14 @@
-﻿using FantasyQuest.Game;
+﻿using FantasyQuest.Adventures;
+using FantasyQuest.Entities;
+using FantasyQuest.Game;
 
 namespace FantasyQuest
 {
     internal class Program
     {
-        private static GameService gameService = new GameService();
+        private static AdventureService adventureService = new AdventureService();
+        private static CharacterService characterService = new CharacterService();
+        private static GameService gameService = new GameService(adventureService, characterService);
         static void Main(string[] args)
         {
             makeTitle();
@@ -27,7 +31,7 @@ namespace FantasyQuest
                 switch (Console.ReadLine().ToUpper())
                 {
                     case "S":
-                        gameService.startGame();
+                        gameService.StartGame();
                         inputValid = true;
                         break;
                     case "L":

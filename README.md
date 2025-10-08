@@ -26,9 +26,21 @@ The goal is to explore a magical world, go on quests, and interact with characte
 ```text
 FantasyQuest/
 ├── Adventures/
+│ └── Interfaces/
+│   └── IAdventureService.cs
 │ └── Adventure.cs
 │ └── AdventureService.cs
+├── Entities/
+│   └── Interfaces/
+│       └── ICharacterService.cs
+│   └── Models/
+│       └── Character.cs
 ├── Game/
 │ └── GameService.cs
+├── Items/
+│   └── Interfaces/
+│       └── IItem.cs
+│   └── Models/
+│       └── Item.cs
 ├── Program.cs
 ├── FantasyQuest.csproj

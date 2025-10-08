@@ -1,28 +1,27 @@
-﻿using FantasyQuest.Adventures;
-using Newtonsoft.Json;
+﻿using FantasyQuest.Adventures.Interfaces;
+using FantasyQuest.Entities.Interfaces;
 
 namespace FantasyQuest.Game
 {
     public class GameService
     {
-        public void startGame()
+        private IAdventureService adventureService;
+        private ICharacterService characterService;
+        public GameService(IAdventureService AdventureService, ICharacterService CharacterService)
         {
-            var bathPath = $"{AppDomain.CurrentDomain.BaseDirectory}/Adventures";
-            var initialAdventure = new Adventure();
+            adventureService = AdventureService;
+            characterService = CharacterService;
+        }
 
-            if (File.Exists($"{bathPath}\\initial.json"))
-            {
-                var directory = new DirectoryInfo(bathPath);
-                var initialJsonfile = directory.GetFiles("initial.json");
+        public void StartGame()
+        {
+            var initialAdventure = adventureService.GetInitialAdventure();
+            var initialCharacter = characterService.LoadInitialCharacter();
 
-                using StreamReader fi = File.OpenText(initialJsonfile[0].FullName);
-                initialAdventure = JsonConvert.DeserializeObject<Adventure>(fi.ReadToEnd());
-
-                Console.WriteLine($"Adventure : {initialAdventure.title}");
-                Console.WriteLine($"Description : {initialAdventure.description}");
-            }
-
-            Console.WriteLine("You stated the game.");
+            Console.WriteLine($"Adventure : {initialAdventure.title}");
+            Console.WriteLine($"Description : {initialAdventure.description}");
+            Console.WriteLine($"Character Name : {initialCharacter.Name}");
+            Console.WriteLine($"Level : {initialCharacter.Level}");
         }
 
     }
