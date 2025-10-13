@@ -1,32 +1,62 @@
-﻿using FantasyQuest.Adventures;
-using FantasyQuest.Entities.Interfaces;
+﻿using FantasyQuest.Entities.Interfaces;
 using FantasyQuest.Entities.Models;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FantasyQuest.Entities
 {
     public class CharacterService : ICharacterService
     {
-        public Character LoadInitialCharacter()
+        public Character LoadCharacter(string name)
         {
             var bathPath = $"{AppDomain.CurrentDomain.BaseDirectory}/Characters";
-            var initialCharacter = new Character();
+            var character = new Character();
 
-            if (File.Exists($"{bathPath}\\cloud.json"))
+            if (File.Exists($"{bathPath}\\{name}.json"))
             {
                 var directory = new DirectoryInfo(bathPath);
-                var initialJsonfile = directory.GetFiles("cloud.json");
+                var characterJsonfile = directory.GetFiles($"{name}.json");
 
-                using StreamReader fi = File.OpenText(initialJsonfile[0].FullName);
-                initialCharacter = JsonConvert.DeserializeObject<Character>(fi.ReadToEnd());
+                using StreamReader fi = File.OpenText(characterJsonfile[0].FullName);
+                character = JsonConvert.DeserializeObject<Character>(fi.ReadToEnd());
+            }
+            else
+            {
+                throw new Exception("Character not found.");
             }
 
-            return initialCharacter;
+            return character;
+        }
+
+        public List<Character> GetCharactersInRange(int minLevel = 0, int maxLevel = 20)
+        {
+            var bathPath = $"{AppDomain.CurrentDomain.BaseDirectory}Characters";
+            var charactersInRange = new List<Character>();
+
+            try
+            {
+                var directory = new DirectoryInfo(bathPath);
+                foreach (var file in directory.GetFiles($"*.json"))
+                {
+                    using (StreamReader fi = File.OpenText(file.FullName))
+                    {
+                        var potentialCharacterInRange = JsonConvert.DeserializeObject<Character>(fi.ReadToEnd());
+                        if (potentialCharacterInRange.IsAlive && (potentialCharacterInRange.Level >= minLevel)
+                            && potentialCharacterInRange.Level <= maxLevel)
+                        {
+                            charactersInRange.Add(potentialCharacterInRange);
+                        }
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                {
+                    Console.WriteLine($"No Character available {ex.Message}");
+                }
+               
+            }
+        return charactersInRange;
         }
     }
 }

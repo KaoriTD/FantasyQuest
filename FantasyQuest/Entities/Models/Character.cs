@@ -2,7 +2,7 @@
 
 namespace FantasyQuest.Entities.Models
 {
-    public class Character
+    public class Character : Entity
     {
         public string Name;
         public int Level;
@@ -14,7 +14,7 @@ namespace FantasyQuest.Entities.Models
         public bool IsAlive;
         public int ArmorClass;
         public List<IItem> Inventory;
-        public int HitPoints;
+        public CharacterClass CharacterClass;
     }
 
     public class Abilities 
@@ -25,5 +25,13 @@ namespace FantasyQuest.Entities.Models
         public int Intelligence;
         public int Wisdom;
         public int Charisma;
+    }
+
+    public enum CharacterClass
+    {
+        Fighter,
+        Thief,
+        MagicUser,
+        Healer
     }
 }
